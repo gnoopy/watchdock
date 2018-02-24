@@ -18,4 +18,5 @@ python sddboard.py
 ## Roadmap
 - Image management
 - Network management
-- 
+- Coloring for better readibility
+
