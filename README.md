@@ -8,3 +8,14 @@ Developers might need a simple dash board for docker. This tool could be helpful
 
 ## Execution
 python sddboard.py
+
+## Current Feature
+- Container/Image/System Information check
+- Container survival (start,stop,restart )
+- Process information of each container
+- Logs of each container
+
+## Roadmap
+- Image management
+- Network management
+- 
