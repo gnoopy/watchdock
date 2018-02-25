@@ -20,3 +20,4 @@ python sddboard.py
 - Network management
 - Coloring for better readibility
 
+![Screenshot](sddboard.png)
