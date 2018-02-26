@@ -1,5 +1,8 @@
 # simple-docker-dashboard
-Developers might need a simple dash board for docker. This tool could be helpful for developers who want overview of docker at a glance.
+There are many great, multi-functinoal and beautiful tools for docker engineers. As a beginner, however, I feel those are too complex for me to use in my development environment. Simple docker dashboard will give you quick overview on your docker environment. Moreover this tool will contribute to your fast understanding and learning curve at private development space.
+
+Please don't expect many features surpassing great docker tools for commercial service operation. :)
+If this can reduce developers effort, the goal is approached.
 
 
 ## Requirement
