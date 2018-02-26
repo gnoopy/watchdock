@@ -5,7 +5,10 @@ Please don't expect many features surpassing great docker tools for commercial s
 What this GUI tool can reduce developers effort is the final goal to be achieved.
 
 
+![Screenshot](sddboard.png)
+
 ## Requirement
+- Docker community edition for Win/Mac/Linux 18.01.x+
 - Python 2.7.x
 - wxPython 4.0.1
 
@@ -23,4 +26,3 @@ python sddboard.py
 - Network management
 - Coloring for better readibility
 
-![Screenshot](sddboard.png)
