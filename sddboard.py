@@ -120,9 +120,11 @@ class DockerDashBoard(wx.Frame):
 		# print(self.cmd_imgs_info)
 		# print("-----------------------------------")
 		(pnl_lst_images,self.lst_images)=self.simple_list(font_header,font1, self.cmd_imgs_info, pnl_images, self.onImgListBox)
-		self.lst_images.SetSelection(0)
-		id=self.get_img_id(self.lst_images.GetStringSelection())
-		cmd_img_history=self.get_img_history_str(id)
+		cmd_img_history=None
+		if len(self.lst_images.GetItems()) != 0:
+			self.lst_images.SetSelection(0)
+			id=self.get_img_id(self.lst_images.GetStringSelection())
+			cmd_img_history=self.get_img_history_str(id)
 		(pnl_lst_image_history,self.lst_images_hst)=self.simple_list(font_header,font1, cmd_img_history, pnl_images, self.onImgHistBox)
 		# pnl_lst_images.SetBackgroundColour(wx.GREEN)
 		hbox_images = wx.BoxSizer(wx.HORIZONTAL)
