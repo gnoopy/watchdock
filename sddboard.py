@@ -25,23 +25,6 @@ class ProgressThread(Thread):
 		wx.MilliSleep(100)
 		pub.sendMessage("update", msg="")
 
-
-class SddBoardMsgBox(wx.Frame):
-	def __init__(self, *args, **kwargs):
-		super(SddBoardMsgBox, self).__init__(*args, **kwargs)
-		self.InitUI()
-
-	def InitUI(self):
-		# wx.FutureCall(5000, self.ShowMessage)
-		self.SetSize((300, 200))
-		self.SetTitle('Message box')
-		self.Centre()
-		self.Show(True)
-
-	def ShowMessage(self, msg, msg_type):
-		wx.MessageBox(msg, msg_type,
-									wx.OK | wx.ICON_ERROR)
-
 class MyProgressDialog(wx.lib.agw.pyprogress.PyProgress):
 	""""""
 	
@@ -109,12 +92,11 @@ class DockerDashBoard(wx.Frame):
 		vbox_container = wx.BoxSizer(wx.VERTICAL)
 		self.txt_details = wx.TextCtrl(pnl_container, style=wx.TE_MULTILINE)
 		self.cmd_cont_info = self.run_cmd_sync('docker container ls -a')
-		if "Cannot connect to the Docker daemon" in self.cmd_cont_info:
+		if "Cannot connect to the Docker daemon" in self.cmd_cont_info or " the docker daemon is not running"  in self.cmd_cont_info:
 			dlg = wx.MessageDialog(parent=None, message="Please run the docker service before run Simple Docker Dashboard"
 				, caption="Error", style=wx.OK|wx.ICON_EXCLAMATION)
 			dlg.ShowModal()
 			dlg.Destroy()
-			# SddBoardMsgBox().ShowMessage("Please docker run the docker service before run Simple Docker Dashboard","Error")
 			exit()
 		lines = self.cmd_cont_info.splitlines()
 		self.lst_containers = wx.ListBox(pnl_container, size=(100, -1),
