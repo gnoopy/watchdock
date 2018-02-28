@@ -1,8 +1,14 @@
 # simple-docker-dashboard
-Developers might need a simple dash board for docker. This tool could be helpful for developers who want overview of docker at a glance.
+There are many great, multi-functinoal and beautiful GUI tools for docker engineers out there. As a beginner, however, I feel those are too complex for me to use in my development environment. Simple docker dashboard will give you quick overview on your docker environment. Moreover this tool will contribute to your fast understanding and learning curve at private development space.
 
+Please don't expect many features surpassing great docker tools for commercial service operation. :)
+What this GUI tool can reduce developers effort is the final goal to be achieved.
+
+
+![Screenshot](sddboard.png)
 
 ## Requirement
+- Docker community edition for Win/Mac/Linux 18.01.x+
 - Python 2.7.x
 - wxPython 4.0.1
 
@@ -20,4 +26,3 @@ python sddboard.py
 - Network management
 - Coloring for better readibility
 
-![Screenshot](sddboard.png)
