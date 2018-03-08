@@ -316,12 +316,12 @@ class DockerDashBoard(wx.Frame):
 		pass
 
 	def onListBox(self, event):
-		container_line = event.GetEventObject().GetStringSelection()
-		self.cont_id = container_line[0:12]
+		self.container_line = event.GetEventObject().GetStringSelection()
+		self.cont_id = self.container_line[0:12]
 		top = self.run_cmd_sync('docker container top '+self.cont_id)+"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n"
 		logs = self.run_cmd_sync('docker container logs '+self.cont_id+'')
-		self.txt_details.SetValue(container_line+"\n"+top+logs)
-		if "Up" in container_line and "Exited (" not in container_line:
+		self.txt_details.SetValue(self.container_line+"\n"+top+logs)
+		if "Up" in self.container_line and "Exited (" not in self.container_line:
 			self.btn_stop.Enable()
 			self.btn_restart.Enable()
 		else:
@@ -331,7 +331,7 @@ class DockerDashBoard(wx.Frame):
 
 	def run_cmd_sync(self, command):
 		process = subprocess.Popen(shlex.split(
-				command), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+				command.encode('ascii','ignore')), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		tup = process.communicate()
 		stdout = tup[0]+tup[1]
 		# print("tup--> "+str(tup))
