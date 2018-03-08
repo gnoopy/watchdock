@@ -4,6 +4,8 @@ There are many great, multi-functinoal and beautiful GUI tools for docker engine
 Please don't expect many features surpassing great docker tools for commercial service operation. :)
 What this GUI tool can reduce developers effort is the final goal to be achieved.
 
+##History
+- Version 0.5 - 03/09/2018
 ![Screenshot](screenshot.png)
 
 ## Requirement
