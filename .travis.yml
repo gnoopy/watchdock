@@ -2,11 +2,20 @@ language: python
 python:
   - "2.7"
 sudo: enabled
-before_install:
+addons:
+  apt:
+    packages:
+      # for wxPython:
+      - python-wxgtk3.0
+      - python-wxtools
+      - wx3.0-doc
+      - wx3.0-examples
+      - wx3.0-headers
+      - wx3.0-i18n
+install:
+  - sudo apt-get update
   - sudo apt-get install python-wxgtk3.0
   - curl -sL https://get.docker.io/ | sh
-
-install:
   - git clone https://github.com/gnoopy/watchdock.git
 
 branches:
