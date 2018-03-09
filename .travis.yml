@@ -1,8 +1,13 @@
 language: python
 python:
   - "2.7"
+sudo: enabled
+before_install:
+  - apt-get install python-wxgtk3.0
+  - curl -sL https://get.docker.io/ | sh
+  - curl -L "$(curl -s https://api.github.com/repos/docker/compose/releases | grep browser_download_url | head -n 4 | grep Linux | grep -v sha256 | cut -d '"' -f 4)" > /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
 install:
-  - pip install -r requirements.txt
   - git clone https://github.com/gnoopy/watchdock.git
 
 branches:
