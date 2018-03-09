@@ -92,7 +92,7 @@ class WatchdockFrame(wx.Frame):
         if "Darwin" in platform.platform():
             self.font_name = "Monaco"
         elif "Ubuntu" in platform.platform():
-            self.font_name = "Ubuntu"
+            self.font_name = "Monospace"
         elif "Widows" in platform.platform():
             self.font_name = "Tahoma"
         self.vmids=[]
@@ -180,6 +180,7 @@ class WatchdockFrame(wx.Frame):
         self.pnl_container.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
         self.lbl_img_header.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
         self.lst_images.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
+        self.lbl_images_hst.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
         self.lst_images_hst.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
         self.window_3.SetMinimumPaneSize(20)
         self.pnl_images.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
@@ -303,7 +304,7 @@ class WatchdockFrame(wx.Frame):
         sout = self.run_cmd_sync("vagrant global-status")
         print("get_vagrant_vmids",sout)
         ids = ['Host']
-        if " no active Vagrant environments" in sout:
+        if " no active Vagrant environments" in sout or sout is "":
             return ids
         else:
             lines = sout.splitlines()
@@ -437,10 +438,12 @@ class WatchdockFrame(wx.Frame):
         if self.testing:
             stdout=self.mockdata[command]
         else:
-            process = subprocess.Popen(shlex.split(command.encode('ascii','ignore')), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            tup = process.communicate()
-            stdout = tup[0]+tup[1]
-    
+            try:
+                process = subprocess.Popen(shlex.split(command.encode('ascii','ignore')), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                tup = process.communicate()
+                stdout = tup[0]+tup[1]
+            except:
+                return ""
         if command.strip().startswith("vagrant"): #wrapped command
             regex = r'Connection to [0-9\.].* closed\.\s'
             stdout = re.sub(regex,'', stdout,0)
@@ -457,7 +460,7 @@ class WatchdockFrame(wx.Frame):
 class WatchdockApp(wx.App):
     def OnInit(self):
         self.frame = WatchdockFrame(None, wx.ID_ANY, "")
-        self.frame.set_test(True)
+        # self.frame.set_test(True)
         self.SetTopWindow(self.frame)
         self.frame.Show()
         
