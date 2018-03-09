@@ -20,8 +20,9 @@ from wx.lib.pubsub import pub
 from threading import Thread
 import wx.lib.agw.pyprogress as PP
 import re
-
+import platform
  
+
 class ProgressThread(Thread):
     """Test Worker Thread Class."""
     
@@ -75,7 +76,15 @@ class MyProgressDialog(wx.lib.agw.pyprogress.PyProgress):
 
 
 class WatchdockFrame(wx.Frame):
+    
     def __init__(self, *args, **kwds):
+        self.font_name="Menlo"
+        if "Darwin" in platform.platform():
+            self.font_name = "Monaco"
+        elif "Ubuntu" in platform.platform():
+            self.font_name = "Ubuntu"
+        elif "Widows" in platform.platform():
+            self.font_name = "Tahoma"
         # begin wxGlade: WatchdockFrame.__init__
         kwds["style"] = kwds.get("style", 0) | wx.DEFAULT_FRAME_STYLE | wx.FRAME_NO_TASKBAR
         wx.Frame.__init__(self, *args, **kwds)
@@ -129,9 +138,9 @@ class WatchdockFrame(wx.Frame):
         _icon = wx.NullIcon
         _icon.CopyFromBitmap(wx.Bitmap("./watchdock.png", wx.BITMAP_TYPE_ANY))
         self.SetIcon(_icon)
-        self.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.BOLD, 0, ""))
+        self.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.BOLD, 0, self.font_name))
         self.choice_1.SetMinSize((80, 23))
-        self.choice_1.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, "Consolas"))
+        self.choice_1.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
         self.choice_1.SetToolTipString("Select vagrant vm ID")
         self.choice_1.SetSelection(0)
         self.btn_refresh.SetMinSize((60, -1))
@@ -151,19 +160,19 @@ class WatchdockFrame(wx.Frame):
         self.btn_del.SetMinSize((60, -1))
         self.btn_del.SetToolTipString("Delete selected image")
         self.btn_del.Enable(False)
-        self.lbl_cont_header.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, "Consolas"))
-        self.lst_containers.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, "Consolas"))
-        self.txt_details.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, "Consolas"))
+        self.lbl_cont_header.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
+        self.lst_containers.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
+        self.txt_details.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
         self.window_2.SetMinimumPaneSize(20)
-        self.pnl_container.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, "Consolas"))
-        self.lbl_img_header.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, "Consolas"))
-        self.lst_images.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, "Consolas"))
-        self.lst_images_hst.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, "Consolas"))
+        self.pnl_container.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
+        self.lbl_img_header.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
+        self.lst_images.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
+        self.lst_images_hst.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
         self.window_3.SetMinimumPaneSize(20)
-        self.pnl_images.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, "Consolas"))
+        self.pnl_images.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
         self.window_1.SetMinimumPaneSize(20)
         self.txt_system.SetMinSize((200, 120))
-        self.txt_system.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, "Consolas"))
+        self.txt_system.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
         # end wxGlade
 
     def __do_layout(self):
@@ -207,7 +216,7 @@ class WatchdockFrame(wx.Frame):
         self.window_1.SplitHorizontally(self.pnl_container, self.pnl_images)
         sizer_4.Add(self.window_1, 1, wx.EXPAND, 0)
         lbl_dockersys = wx.StaticText(self.panel_2, wx.ID_ANY, "Waiting for docker system  information...")
-        lbl_dockersys.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, "Consolas"))
+        lbl_dockersys.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
         self.sizer_6.Add(lbl_dockersys, 0, wx.EXPAND, 0)
         self.sizer_6.Add(self.txt_system, 1, wx.EXPAND, 0)
         self.panel_2.SetSizer(self.sizer_6)
