@@ -19,13 +19,25 @@ Although I don't want you to expect more features surpassing great docker tools 
 
 
 ## Requirement
-- Docker community edition for Win/Mac/Linux 18.01.x+
+- Docker community edition for Win/Mac/Ubuntu, 18.01.x+
 - Python 2.7.x
-- wxPython 4.0.1
+- wxPython 3.0.2.0+
 
 
-## Execution
+## Installation & Execution
+
+### Mac & Windows
+```
+pip install -r requirements.txt
 python watchdock.py
+```
+
+### Ubuntu
+```
+sudo apt-get update
+sudo apt-get install python-wxgtk3.0
+python watchdock.py
+```
 
 
 ## Current Features
@@ -37,10 +49,12 @@ python watchdock.py
 
 
 ## Roadmap
+- Fixed Font support for all environment
 - Network management
 - Coloring for better readiability
 - Advanced Image management
 - Attaching shell
 - Docker image watch in [`Vagrant`](https://www.vagrantup.com/) VMs
 - Deployment management
+- Universal installer for Mac, Windows and Ubuntu
 
