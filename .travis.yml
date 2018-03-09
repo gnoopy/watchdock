@@ -1,6 +1,7 @@
 language: python
 python:
   - "2.7"
+sudo: enabled
 before_install:
   - pip install -r requirements.txt
   - curl -sL https://get.docker.io/ | sh
