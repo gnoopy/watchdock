@@ -2,17 +2,9 @@ language: python
 python:
   - "2.7"
 sudo: enabled
-addons:
-  apt:
-    packages:
-      - python-wxgtk3.0
-      - python-wxtools
 
 install:
-  - sudo apt-get update
-  - sudo apt-get install python-wxgtk3.0
-  - curl -sL https://get.docker.io/ | sh
-  - git clone https://github.com/gnoopy/watchdock.git
+  - pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-16.04 wxPython
 
 branches:
   only:
