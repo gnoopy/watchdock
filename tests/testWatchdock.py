@@ -2,7 +2,7 @@ import unittest
 import wx
 
 import watchdock.run as run
-
+import time
 # import testTopLevelWindow
 
 class WatchdockTest(unittest.TestCase):
@@ -23,15 +23,12 @@ class WatchdockTest(unittest.TestCase):
         assert itemcnt == len(sout.splitlines()[1:])
 
     def test_container_selection(self):
-        index=2
+        index=0
         self.frame.lst_containers.SetSelection(index)
-        cmd=wx.CommandEvent(commandEventType=wx.EVT_LISTBOX.evtType[0])
+        cmd=wx.CommandEvent(commandEventType=wx.EVT_LISTBOX.evtType[0],id=self.frame.lst_containers.GetId())
         cmd.SetEventObject(self.frame.lst_containers)
-        cmd.SetId(self.frame.lst_containers.GetId())
-        cmd.SetInt(index)
-        cmd.SetString(self.frame.lst_containers.GetString(index))
-        self.frame.lst_containers.GetEventHandler().ProcessEvent(cmd)
-        
+        self.frame.ProcessEvent(cmd)
+        # wx.PostEvent(self.frame, cmd)
         sout = self.frame.mockdata['docker container ls -a']
         # time.sleep(1)
         # print("sout ==>",sout.splitlines()[index+1])
@@ -42,12 +39,12 @@ class WatchdockTest(unittest.TestCase):
     def test_image_selection(self):
         index=0
         self.frame.lst_images.SetSelection(index)
-        cmd=wx.CommandEvent(commandEventType=wx.EVT_LISTBOX.evtType[0])
+        cmd=wx.CommandEvent(commandEventType=wx.EVT_LISTBOX.evtType[0],id=self.frame.lst_images.GetId())
         cmd.SetEventObject(self.frame.lst_images)
-        cmd.SetId(self.frame.lst_images.GetId())
-        cmd.SetInt(index)
-        cmd.SetString(self.frame.lst_images.GetString(index))
-        self.frame.lst_images.GetEventHandler().ProcessEvent(cmd)
+        # cmd.SetId(self.frame.lst_images.GetId())
+        # cmd.SetInt(index)
+        # cmd.SetString(self.frame.lst_images.GetString(index))
+        self.frame.ProcessEvent(cmd)
         
         img_line = self.frame.lst_images.GetStringSelection()
         img_id = img_line[46:58]

@@ -302,7 +302,7 @@ class WatchdockFrame(wx.Frame):
     
     def get_vagrant_vmids(self):
         sout = self.run_cmd_sync("vagrant global-status")
-        print("get_vagrant_vmids",sout)
+        # print("get_vagrant_vmids",sout)
         ids = ['Host']
         if " no active Vagrant environments" in sout or sout is "":
             return ids
@@ -334,7 +334,7 @@ class WatchdockFrame(wx.Frame):
         tmp_index = self.chc_vgt_ids.GetSelection()
         old_vmid_str = self.chc_vgt_ids.GetString(tmp_index)
         self.vmids = self.get_vagrant_vmids()
-        print("old_vmid_str",old_vmid_str," ===>", "vmids",self.vmids )
+        # print("old_vmid_str",old_vmid_str," ===>", "vmids",self.vmids )
         self.chc_vgt_ids.SetItems(self.vmids)
         sel = self.chc_vgt_ids.FindString(old_vmid_str)
         self.chc_vgt_ids.SetSelection(sel)
@@ -385,11 +385,10 @@ class WatchdockFrame(wx.Frame):
     def onListBox(self, event):  # wxGlade: WatchdockFrame.<event_handler>
         # print("event ==>",str(event.GetSelection()))
         # print("event ==>",str(event.GetString()))
-
         self.container_line = event.GetEventObject().GetStringSelection()
         self.cont_id = self.container_line[0:12] #0:12
-        print("CONTAINER LINE",self.container_line)
-        print("CONTAINER ID",self.cont_id)
+        # print("CONTAINER LINE",self.container_line)
+        # print("CONTAINER ID",self.cont_id)
 
         top = self.run_cmd_sync('docker container top '+self.cont_id)+"\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n"
         logs = self.run_cmd_sync('docker container logs '+self.cont_id+'')
@@ -397,27 +396,30 @@ class WatchdockFrame(wx.Frame):
         logs = ansi_escape.sub('', logs)
 
         self.txt_details.SetValue(self.container_line+"\n"+top+logs)
-        if "Up" in self.container_line and "Exited (" not in self.container_line:
-            self.btn_stop.Enable()
-            self.btn_restart.Enable()
-            self.btn_save.Enable()
-        else:
-            self.btn_stop.Disable()
-            self.btn_restart.Disable()
-            self.btn_start.Enable()
-            self.btn_save.Disable()
+        if not self.testing :
+            if "Up" in self.container_line and "Exited (" not in self.container_line:
+                self.btn_stop.Enable()
+                self.btn_restart.Enable()
+                self.btn_save.Enable()
+            else:
+                self.btn_stop.Disable()
+                self.btn_restart.Disable()
+                self.btn_start.Enable()
+                self.btn_save.Disable()
+        event.Skip()
 
     def onImgListBox(self, event):  # wxGlade: WatchdockFrame.<event_handler>
         img_line = event.GetEventObject().GetStringSelection()
         self.img_id = img_line[46:58]
-        print("img id :"+str(self.img_id)+"-----------------")
+        # print("img id :"+str(self.img_id)+"-----------------")
         str_history = self.run_cmd_sync('docker image history '+self.img_id+'')
         if str_history is not None:
             lines = str_history.splitlines()
             self.lbl_images_hst.SetLabel(lines[0])
             self.lst_images_hst.SetItems(lines[1:])
-        self.btn_del.Enable()
-        print("event ==>",str(event))
+        if not self.testing :        
+            self.btn_del.Enable()
+        # print("event ==>",str(event))
 
     def onImgHistBox(self, event):  # wxGlade: WatchdockFrame.<event_handler>
         print("Event handler 'onImgHistBox' not implemented!")
@@ -432,7 +434,7 @@ class WatchdockFrame(wx.Frame):
     def run_cmd_sync(self, command):
         if not command.strip().startswith("vagrant"):
             command=self.wrap_vagrant_cmd(command)
-        print("command",command)
+        # print("command",command)
         
         stdout=""
         if self.testing:
@@ -461,7 +463,7 @@ class WatchdockFrame(wx.Frame):
 class WatchdockApp(wx.App):
     def OnInit(self):
         self.frame = WatchdockFrame(None, wx.ID_ANY, "")
-        self.frame.set_test(False)
+        # self.frame.set_test(True)
         self.SetTopWindow(self.frame)
         self.frame.Show()
         

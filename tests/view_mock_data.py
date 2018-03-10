@@ -17,7 +17,7 @@ print("a==========>",a)
 # pickle.dump(a,f)
 
 
-f.close()
+# f.close()
 
 
 # print("All data -------------------\n"+str(d))
@@ -32,4 +32,4 @@ f.close()
 #     print(keyVar)
 # # save the data for future use.
 # myData.close()
-d.close()
+# d.close()
