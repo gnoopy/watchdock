@@ -83,7 +83,7 @@ class WatchdockFrame(wx.Frame):
         if self.testing:
             f = open('./tests/mockdata.pkl','rb')
             self.mockdata=pickle.load(f)
-        self.panel_1.SetBackgroundColour(wx.YELLOW)
+            self.panel_1.SetBackgroundColour(wx.YELLOW)
         self.refresh()
 
     def __init__(self, *args, **kwds):
@@ -143,7 +143,6 @@ class WatchdockFrame(wx.Frame):
         self.Bind(wx.EVT_LISTBOX, self.onImgListBox, self.lst_images)
         self.Bind(wx.EVT_LISTBOX, self.onImgHistBox, self.lst_images_hst)
         # end wxGlade
-        self.refresh()
         
 
     def __set_properties(self):
@@ -462,7 +461,7 @@ class WatchdockFrame(wx.Frame):
 class WatchdockApp(wx.App):
     def OnInit(self):
         self.frame = WatchdockFrame(None, wx.ID_ANY, "")
-        # self.frame.set_test(True)
+        self.frame.set_test(False)
         self.SetTopWindow(self.frame)
         self.frame.Show()
         
