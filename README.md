@@ -1,9 +1,6 @@
 # Watchdock 
 >#### Simple `docker management` and `monitoring` tool based on `DOCKER CLI` for developers
 
- [![Build status](https://ci.appveyor.com/api/projects/status/pjxh5g91jpbh7t84?svg=true)](https://ci.appveyor.com/project/tygerbytes/resourcefitness) [![Coveralls](https://coveralls.io/repos/github/tygerbytes/ResourceFitness/badge.svg?branch=master)](https://coveralls.io/github/tygerbytes/ResourceFitness?branch=master)
- [![nuget](https://img.shields.io/nuget/v/TW.Resfit.Core.svg)](https://www.nuget.org/packages/TW.Resfit.Core/)
-
 ----
 
 There are many great, multi-functinoal and beautiful GUI tools for `docker` engineers out there. As a beginner, however, I feel those are too complex for me to use in my development environment. Watchdock will give you quick overview and monitoring method of docker with `light` and `fast` UI operation. Moreover this tool will contribute to your docker study with easy understanding and learning curve at private development space.
@@ -14,12 +11,13 @@ Although I don't want you to expect more features surpassing great docker tools 
 1. Less typing docker commands during development
 2. Prompt UI respond on development PC
 3. Extended functions related to `docker management` for development effectiveness
-
+ 
 
 ----
 
 
 ## History
+- Version 0.6 - 03/10/2018 - Vagrant docker information consolidation feature
 - Version 0.5 - 03/09/2018
 ![Screenshot](screenshot.png)
 
@@ -40,8 +38,7 @@ python watchdock.py
 
 ### Ubuntu
 ```
-sudo apt-get update
-sudo apt-get install python-wxgtk3.0
+pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-16.04 wxPython
 python watchdock.py
 ```
 
@@ -52,15 +49,15 @@ python watchdock.py
 - Process information of each container
 - Logs of each container
 - Image save
+- Docker image watch in [`Vagrant`](https://www.vagrantup.com/) VMs
+- Fixed Font support for all environment
 
 
 ## Roadmap
-- Fixed Font support for all environment
 - Network management
 - Coloring for better readiability
 - Advanced Image management
 - Attaching shell
-- Docker image watch in [`Vagrant`](https://www.vagrantup.com/) VMs
 - Deployment management
 - Universal installer for Mac, Windows and Ubuntu
 

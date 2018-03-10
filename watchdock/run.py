@@ -21,7 +21,8 @@ from threading import Thread
 import wx.lib.agw.pyprogress as PP
 import re
 import platform
- 
+import shelve
+
 
 class ProgressThread(Thread):
     """Test Worker Thread Class."""
@@ -76,19 +77,32 @@ class MyProgressDialog(wx.lib.agw.pyprogress.PyProgress):
 
 
 class WatchdockFrame(wx.Frame):
-    
+
+    def set_test(self, testing=False):
+        self.testing = testing
+        if self.testing:
+            self.mockdata = shelve.open('./tests/mockdata.json')
+        self.panel_1.SetBackgroundColour(wx.YELLOW)
+        self.refresh()
+
     def __init__(self, *args, **kwds):
-        self.font_name="Menlo"
+        self.mockdata = None
+        self.testing = False
+        self.font_name = "Menlo"
         if "Darwin" in platform.platform():
             self.font_name = "Monaco"
         elif "Ubuntu" in platform.platform():
             self.font_name = "Ubuntu"
         elif "Widows" in platform.platform():
             self.font_name = "Tahoma"
+        self.vmids=[]
+        self.cmd_cont_info=""
+        self.cmd_imgs_info =""
+        self.cmd_df_info=""
         # begin wxGlade: WatchdockFrame.__init__
         kwds["style"] = kwds.get("style", 0) | wx.DEFAULT_FRAME_STYLE | wx.FRAME_NO_TASKBAR
         wx.Frame.__init__(self, *args, **kwds)
-        self.SetSize((800, 840))
+        self.SetSize((1024, 840))
         self.panel_1 = wx.Panel(self, wx.ID_ANY)
         self.chc_vgt_ids = wx.Choice(self.panel_1, wx.ID_ANY, choices=["Host"])
         self.btn_refresh = wx.Button(self.panel_1, wx.ID_ANY, "refresh")
@@ -128,10 +142,8 @@ class WatchdockFrame(wx.Frame):
         self.Bind(wx.EVT_LISTBOX, self.onImgListBox, self.lst_images)
         self.Bind(wx.EVT_LISTBOX, self.onImgHistBox, self.lst_images_hst)
         # end wxGlade
-        self.cmd_cont_info=""
-        self.cmd_imgs_info =""
-        self.cmd_df_info=""
         self.refresh()
+        
 
     def __set_properties(self):
         # begin wxGlade: WatchdockFrame.__set_properties
@@ -139,19 +151,11 @@ class WatchdockFrame(wx.Frame):
         _icon = wx.NullIcon
         _icon.CopyFromBitmap(wx.Bitmap("./watchdock.png", wx.BITMAP_TYPE_ANY))
         self.SetIcon(_icon)
-<<<<<<< HEAD
         self.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.BOLD, 0, self.font_name))
-        self.choice_1.SetMinSize((80, 23))
-        self.choice_1.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
-        self.choice_1.SetToolTipString("Select vagrant vm ID")
-        self.choice_1.SetSelection(0)
-=======
-        self.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.BOLD, 0, ""))
         self.chc_vgt_ids.SetMinSize((80, 23))
-        self.chc_vgt_ids.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, "Consolas"))
-        self.chc_vgt_ids.SetToolTip("Select vagrant vm ID")
+        self.chc_vgt_ids.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
+        self.chc_vgt_ids.SetToolTipString("Select vagrant vm ID")
         self.chc_vgt_ids.SetSelection(0)
->>>>>>> 53d84d1dce40e582bb054651db73d94d23dd3f10
         self.btn_refresh.SetMinSize((60, -1))
         self.btn_refresh.SetToolTipString("update all information from docker")
         self.btn_stop.SetMinSize((60, -1))
@@ -240,14 +244,15 @@ class WatchdockFrame(wx.Frame):
     def OnChoice(self, event):  # wxGlade: WatchdockFrame.<event_handler>
         print("Event handler 'OnChoice' not implemented!")
         #TODO: Add vagrant docker commands https://www.vagrantup.com/docs/cli/ssh.html
-        self.vagrant_prefi="vagrant connect -c ....."
+        self.refresh()
+        print("event ==>",str(event))
         event.Skip()
 
-        
     def OnClickedRefresh(self, event):  # wxGlade: WatchdockFrame.<event_handler>
         self.refresh()
         # btn = event.GetEventObject().GetLabel()
         # print "Label of pressed button = ", btn
+        print("event ==>",str(event))
 
     def OnClickedStop(self, event):  # wxGlade: WatchdockFrame.<event_handler>
         ProgressThread()
@@ -288,24 +293,27 @@ class WatchdockFrame(wx.Frame):
         self.run_cmd_sync('docker image rm '+self.img_id)
         self.refresh()
         self.btn_del.Disable()
+        print("event ==>",str(event))
 
     def get_img_id(self, img_line):
         self.img_id = img_line[46:58]
         return self.img_id
     
     def get_vagrant_vmids(self):
-        sout=self.run_cmd_sync("vagrant global-status")
-        ids=['Host']
+        sout = self.run_cmd_sync("vagrant global-status")
+        print("get_vagrant_vmids",sout)
+        ids = ['Host']
         if " no active Vagrant environments" in sout:
-            return []
+            return ids
         else:
-            for line in sout[2:]:
-                if "poweroff" not in line:
+            lines = sout.splitlines()
+            for line in lines[2:]:
+                if "running" in line:
                     ids.append(line[0:7])
             return ids
 
     def get_img_history_str(self, id):
-        str_history = self.run_cmd_sync('docker image history '+self.cont_id+'')
+        str_history = self.run_cmd_sync('docker image history '+self.img_id+'')
         # lines = str_history.splitlines()
         return str_history
 
@@ -322,9 +330,15 @@ class WatchdockFrame(wx.Frame):
         self.refresh()
 
     def refresh(self):
-        # self.cmd_cont_info = self.run_cmd_sync('docker container ls -a')
-        self.vmids=get_vagrant_vmids()
-        self.lst_images.IsSelected=False
+        tmp_index = self.chc_vgt_ids.GetSelection()
+        old_vmid_str = self.chc_vgt_ids.GetString(tmp_index)
+        self.vmids = self.get_vagrant_vmids()
+        print("old_vmid_str",old_vmid_str," ===>", "vmids",self.vmids )
+        self.chc_vgt_ids.SetItems(self.vmids)
+        sel = self.chc_vgt_ids.FindString(old_vmid_str)
+        self.chc_vgt_ids.SetSelection(sel)
+
+
         self.cont_id = None
         sout = self.run_cmd_sync('docker container ls -a')
         if "Cannot connect to the Docker daemon" in sout or " the docker daemon is not running"  in sout:
@@ -337,6 +351,7 @@ class WatchdockFrame(wx.Frame):
             lines = sout.splitlines()
             self.lbl_cont_header.SetLabel(lines[0])
             self.lst_containers.SetItems(lines[1:])
+            self.txt_details.Clear()
             self.btn_start.Disable()
             self.btn_restart.Disable()
             self.btn_stop.Disable()
@@ -349,9 +364,9 @@ class WatchdockFrame(wx.Frame):
             self.lbl_img_header.SetLabel(lines[0])
             self.lst_images.SetItems(lines[1:])
             # self.lst_images.SetSelection(0)
-            if self.lst_images.IsSelected:
-                id=self.get_img_id(self.lst_images.GetStringSelection())
-                sout=self.get_img_history_str(id)
+            if self.lst_images.GetSelection() is not wx.NOT_FOUND:
+                imgid=self.get_img_id(self.lst_images.GetStringSelection())
+                sout=self.get_img_history_str(imgid)
                 lines = sout.splitlines()
                 self.lst_images_hst.SetItems(lines[1:])
             else:
@@ -367,6 +382,9 @@ class WatchdockFrame(wx.Frame):
         # wx.CallAfter(pub.sendMessage, "update", msg="-1")
 
     def onListBox(self, event):  # wxGlade: WatchdockFrame.<event_handler>
+        print("event ==>",str(event.GetSelection()))
+        print("event ==>",str(event.GetString()))
+
         self.container_line = event.GetEventObject().GetStringSelection()
         self.cont_id = self.container_line[0:12] #0:12
         print("CONTAINER LINE",self.container_line)
@@ -375,7 +393,7 @@ class WatchdockFrame(wx.Frame):
         top = self.run_cmd_sync('docker container top '+self.cont_id)+"\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n"
         logs = self.run_cmd_sync('docker container logs '+self.cont_id+'')
         ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
-        logs=ansi_escape.sub('', logs)
+        logs = ansi_escape.sub('', logs)
 
         self.txt_details.SetValue(self.container_line+"\n"+top+logs)
         if "Up" in self.container_line and "Exited (" not in self.container_line:
@@ -388,7 +406,6 @@ class WatchdockFrame(wx.Frame):
             self.btn_start.Enable()
             self.btn_save.Disable()
 
-
     def onImgListBox(self, event):  # wxGlade: WatchdockFrame.<event_handler>
         img_line = event.GetEventObject().GetStringSelection()
         self.img_id = img_line[46:58]
@@ -399,24 +416,48 @@ class WatchdockFrame(wx.Frame):
             self.lbl_images_hst.SetLabel(lines[0])
             self.lst_images_hst.SetItems(lines[1:])
         self.btn_del.Enable()
+        print("event ==>",str(event))
 
     def onImgHistBox(self, event):  # wxGlade: WatchdockFrame.<event_handler>
         print("Event handler 'onImgHistBox' not implemented!")
+        print("event ==>",str(event))
         event.Skip()
 
+    def wrap_vagrant_cmd(self,cmd_str):
+        if len(self.vmids) >= 2 and self.chc_vgt_ids.GetSelection() > 0:
+            cmd_str = 'vagrant ssh -c "'+cmd_str+'" '+self.chc_vgt_ids.GetStringSelection()
+        return cmd_str
+
     def run_cmd_sync(self, command):
+        if not command.strip().startswith("vagrant"):
+            command=self.wrap_vagrant_cmd(command)
         print("command",command)
-        process = subprocess.Popen(shlex.split(command.encode('ascii','ignore')), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        tup = process.communicate()
-        stdout = tup[0]+tup[1]
-        # print("tup--> "+str(tup))
-        return stdout
+        
+        stdout=""
+        if self.testing:
+            stdout=self.mockdata[command]
+        else:
+            process = subprocess.Popen(shlex.split(command.encode('ascii','ignore')), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            tup = process.communicate()
+            stdout = tup[0]+tup[1]
+    
+        if command.strip().startswith("vagrant"): #wrapped command
+            regex = r'Connection to [0-9\.].* closed\.\s'
+            stdout = re.sub(regex,'', stdout,0)
+        ret=stdout.replace("\r","")
+
+        # temporal use for test data record
+        # testdata = shelve.open('./tests/mockdata.json')
+        # testdata[command]=ret
+        # testdata.close()
+        return ret
 
 # end of class WatchdockFrame
 
 class WatchdockApp(wx.App):
     def OnInit(self):
         self.frame = WatchdockFrame(None, wx.ID_ANY, "")
+        self.frame.set_test(True)
         self.SetTopWindow(self.frame)
         self.frame.Show()
         
