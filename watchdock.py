@@ -88,9 +88,9 @@ class WatchdockFrame(wx.Frame):
         # begin wxGlade: WatchdockFrame.__init__
         kwds["style"] = kwds.get("style", 0) | wx.DEFAULT_FRAME_STYLE | wx.FRAME_NO_TASKBAR
         wx.Frame.__init__(self, *args, **kwds)
-        self.SetSize((800, 600))
+        self.SetSize((800, 840))
         self.panel_1 = wx.Panel(self, wx.ID_ANY)
-        self.choice_1 = wx.Choice(self.panel_1, wx.ID_ANY, choices=["Host"])
+        self.chc_vgt_ids = wx.Choice(self.panel_1, wx.ID_ANY, choices=["Host"])
         self.btn_refresh = wx.Button(self.panel_1, wx.ID_ANY, "refresh")
         self.btn_stop = wx.Button(self.panel_1, wx.ID_ANY, "stop")
         self.btn_restart = wx.Button(self.panel_1, wx.ID_ANY, "restart")
@@ -117,6 +117,7 @@ class WatchdockFrame(wx.Frame):
         self.__set_properties()
         self.__do_layout()
 
+        self.Bind(wx.EVT_CHOICE, self.OnChoice, self.chc_vgt_ids)
         self.Bind(wx.EVT_BUTTON, self.OnClickedRefresh, self.btn_refresh)
         self.Bind(wx.EVT_BUTTON, self.OnClickedStop, self.btn_stop)
         self.Bind(wx.EVT_BUTTON, self.OnClickedRestart, self.btn_restart)
@@ -138,11 +139,19 @@ class WatchdockFrame(wx.Frame):
         _icon = wx.NullIcon
         _icon.CopyFromBitmap(wx.Bitmap("./watchdock.png", wx.BITMAP_TYPE_ANY))
         self.SetIcon(_icon)
+<<<<<<< HEAD
         self.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.BOLD, 0, self.font_name))
         self.choice_1.SetMinSize((80, 23))
         self.choice_1.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
         self.choice_1.SetToolTipString("Select vagrant vm ID")
         self.choice_1.SetSelection(0)
+=======
+        self.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.BOLD, 0, ""))
+        self.chc_vgt_ids.SetMinSize((80, 23))
+        self.chc_vgt_ids.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, "Consolas"))
+        self.chc_vgt_ids.SetToolTip("Select vagrant vm ID")
+        self.chc_vgt_ids.SetSelection(0)
+>>>>>>> 53d84d1dce40e582bb054651db73d94d23dd3f10
         self.btn_refresh.SetMinSize((60, -1))
         self.btn_refresh.SetToolTipString("update all information from docker")
         self.btn_stop.SetMinSize((60, -1))
@@ -184,7 +193,7 @@ class WatchdockFrame(wx.Frame):
         sizer_1 = wx.BoxSizer(wx.VERTICAL)
         sizer_8 = wx.StaticBoxSizer(wx.StaticBox(self.pnl_container, wx.ID_ANY, "Containers"), wx.VERTICAL)
         self.sizer_5 = wx.StaticBoxSizer(wx.StaticBox(self.panel_1, wx.ID_ANY, "Commands"), wx.HORIZONTAL)
-        self.sizer_5.Add(self.choice_1, 0, 0, 0)
+        self.sizer_5.Add(self.chc_vgt_ids, 0, 0, 0)
         self.sizer_5.Add((10, 20), 0, 0, 0)
         self.sizer_5.Add(self.btn_refresh, 0, wx.ALL, 1)
         self.sizer_5.Add((10, 18), 0, 0, 0)
@@ -228,6 +237,13 @@ class WatchdockFrame(wx.Frame):
         self.Centre()
         # end wxGlade
 
+    def OnChoice(self, event):  # wxGlade: WatchdockFrame.<event_handler>
+        print("Event handler 'OnChoice' not implemented!")
+        #TODO: Add vagrant docker commands https://www.vagrantup.com/docs/cli/ssh.html
+        self.vagrant_prefi="vagrant connect -c ....."
+        event.Skip()
+
+        
     def OnClickedRefresh(self, event):  # wxGlade: WatchdockFrame.<event_handler>
         self.refresh()
         # btn = event.GetEventObject().GetLabel()
@@ -277,6 +293,17 @@ class WatchdockFrame(wx.Frame):
         self.img_id = img_line[46:58]
         return self.img_id
     
+    def get_vagrant_vmids(self):
+        sout=self.run_cmd_sync("vagrant global-status")
+        ids=['Host']
+        if " no active Vagrant environments" in sout:
+            return []
+        else:
+            for line in sout[2:]:
+                if "poweroff" not in line:
+                    ids.append(line[0:7])
+            return ids
+
     def get_img_history_str(self, id):
         str_history = self.run_cmd_sync('docker image history '+self.cont_id+'')
         # lines = str_history.splitlines()
@@ -296,6 +323,7 @@ class WatchdockFrame(wx.Frame):
 
     def refresh(self):
         # self.cmd_cont_info = self.run_cmd_sync('docker container ls -a')
+        self.vmids=get_vagrant_vmids()
         self.lst_images.IsSelected=False
         self.cont_id = None
         sout = self.run_cmd_sync('docker container ls -a')
