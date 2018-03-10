@@ -149,7 +149,7 @@ class WatchdockFrame(wx.Frame):
         # begin wxGlade: WatchdockFrame.__set_properties
         self.SetTitle("Watchdock")
         _icon = wx.NullIcon
-        _icon.CopyFromBitmap(wx.Bitmap("./watchdock.png", wx.BITMAP_TYPE_ANY))
+        _icon.CopyFromBitmap(wx.Bitmap("./watchdock/watchdock.png", wx.BITMAP_TYPE_ANY))
         self.SetIcon(_icon)
         self.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.BOLD, 0, self.font_name))
         self.chc_vgt_ids.SetMinSize((80, 23))
