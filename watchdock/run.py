@@ -383,8 +383,8 @@ class WatchdockFrame(wx.Frame):
         # wx.CallAfter(pub.sendMessage, "update", msg="-1")
 
     def onListBox(self, event):  # wxGlade: WatchdockFrame.<event_handler>
-        print("event ==>",str(event.GetSelection()))
-        print("event ==>",str(event.GetString()))
+        # print("event ==>",str(event.GetSelection()))
+        # print("event ==>",str(event.GetString()))
 
         self.container_line = event.GetEventObject().GetStringSelection()
         self.cont_id = self.container_line[0:12] #0:12
