@@ -1,8 +1,24 @@
 import shelve
-d = shelve.open('./mockdata.json')
+import pickle
+
+a={}
 
 
-print("keys------------------------\n"+str(d.keys()))
+f=open('tests/mockdata.pkl','rb')
+a=pickle.load(f)
+print("a keys ====>",a.keys())
+print("a==========>",a)
+
+# d = shelve.open('tests/mockdata.json')
+# f=open('tests/mockdata.pkl','wb')
+# for k in d.keys():
+#     v = d[k]
+#     a[k]=v 
+# pickle.dump(a,f)
+
+
+f.close()
+
 
 # print("All data -------------------\n"+str(d))
 # del d['a']

@@ -21,7 +21,7 @@ from threading import Thread
 import wx.lib.agw.pyprogress as PP
 import re
 import platform
-import shelve
+import pickle
 
 
 class ProgressThread(Thread):
@@ -81,12 +81,13 @@ class WatchdockFrame(wx.Frame):
     def set_test(self, testing=False):
         self.testing = testing
         if self.testing:
-            self.mockdata = shelve.open('./tests/mockdata.json')
+            f = open('./tests/mockdata.pkl','rb')
+            self.mockdata=pickle.load(f)
         self.panel_1.SetBackgroundColour(wx.YELLOW)
         self.refresh()
 
     def __init__(self, *args, **kwds):
-        self.mockdata = None
+        self.mockdata = {}
         self.testing = False
         self.font_name = "Menlo"
         if "Darwin" in platform.platform():
@@ -450,9 +451,10 @@ class WatchdockFrame(wx.Frame):
         ret=stdout.replace("\r","")
 
         # temporal use for test data record
-        # testdata = shelve.open('./tests/mockdata.json')
         # testdata[command]=ret
-        # testdata.close()
+        # f = open('./tests/mockdata.pickle','wb')
+        # pickle.dump(testdata,f)
+        # f.close()
         return ret
 
 # end of class WatchdockFrame
@@ -460,7 +462,7 @@ class WatchdockFrame(wx.Frame):
 class WatchdockApp(wx.App):
     def OnInit(self):
         self.frame = WatchdockFrame(None, wx.ID_ANY, "")
-        # self.frame.set_test(False)
+        # self.frame.set_test(True)
         self.SetTopWindow(self.frame)
         self.frame.Show()
         
