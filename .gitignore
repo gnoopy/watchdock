@@ -1,0 +1,6 @@
+regextest.py
+test_unittest.py
+.pytest_cache
+.vscode
+*.pyc
+release.sh
