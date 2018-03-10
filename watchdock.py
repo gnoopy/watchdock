@@ -76,12 +76,14 @@ class MyProgressDialog(wx.lib.agw.pyprogress.PyProgress):
 
 class WatchdockFrame(wx.Frame):
     def __init__(self, *args, **kwds):
+        
+        self.vmids=["Host"]
         # begin wxGlade: WatchdockFrame.__init__
         kwds["style"] = kwds.get("style", 0) | wx.DEFAULT_FRAME_STYLE | wx.FRAME_NO_TASKBAR
         wx.Frame.__init__(self, *args, **kwds)
         self.SetSize((800, 840))
         self.panel_1 = wx.Panel(self, wx.ID_ANY)
-        self.chc_vgt_ids = wx.Choice(self.panel_1, wx.ID_ANY, choices=["Host"])
+        self.chc_vgt_ids = wx.Choice(self.panel_1, wx.ID_ANY, choices=self.vmids)
         self.btn_refresh = wx.Button(self.panel_1, wx.ID_ANY, "refresh")
         self.btn_stop = wx.Button(self.panel_1, wx.ID_ANY, "stop")
         self.btn_restart = wx.Button(self.panel_1, wx.ID_ANY, "restart")
@@ -277,10 +279,10 @@ class WatchdockFrame(wx.Frame):
         return self.img_id
     
     def get_vagrant_vmids(self):
-        sout=self.run_cmd_sync("vagrant global-status")
-        ids=['Host']
+        sout = self.run_cmd_sync("vagrant global-status")
+        ids = ['Host']
         if " no active Vagrant environments" in sout:
-            return []
+            return ids
         else:
             for line in sout[2:]:
                 if "poweroff" not in line:
@@ -306,7 +308,7 @@ class WatchdockFrame(wx.Frame):
 
     def refresh(self):
         # self.cmd_cont_info = self.run_cmd_sync('docker container ls -a')
-        self.vmids=get_vagrant_vmids()
+        self.vmids=self.get_vagrant_vmids()
         self.lst_images.IsSelected=False
         self.cont_id = None
         sout = self.run_cmd_sync('docker container ls -a')
