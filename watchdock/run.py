@@ -180,7 +180,7 @@ class WatchdockFrame(wx.Frame):
         self.pnl_container.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
         self.lbl_img_header.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
         self.lst_images.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
-       
+        self.lbl_images_hst.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
         self.lst_images_hst.SetFont(wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
         self.window_3.SetMinimumPaneSize(20)
         self.pnl_images.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL, 0, self.font_name))
@@ -443,7 +443,7 @@ class WatchdockFrame(wx.Frame):
                 tup = process.communicate()
                 stdout = tup[0]+tup[1]
             except:
-                return "" 
+                return ""
         if command.strip().startswith("vagrant"): #wrapped command
             regex = r'Connection to [0-9\.].* closed\.\s'
             stdout = re.sub(regex,'', stdout,0)
