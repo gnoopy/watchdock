@@ -246,14 +246,12 @@ class WatchdockFrame(wx.Frame):
         print("Event handler 'OnChoice' not implemented!")
         #TODO: Add vagrant docker commands https://www.vagrantup.com/docs/cli/ssh.html
         self.refresh()
-        print("event ==>",str(event))
         event.Skip()
 
     def OnClickedRefresh(self, event):  # wxGlade: WatchdockFrame.<event_handler>
         self.refresh()
         # btn = event.GetEventObject().GetLabel()
         # print "Label of pressed button = ", btn
-        print("event ==>",str(event))
 
     def OnClickedStop(self, event):  # wxGlade: WatchdockFrame.<event_handler>
         ProgressThread()
@@ -294,7 +292,6 @@ class WatchdockFrame(wx.Frame):
         self.run_cmd_sync('docker image rm '+self.img_id)
         self.refresh()
         self.btn_del.Disable()
-        print("event ==>",str(event))
 
     def get_img_id(self, img_line):
         self.img_id = img_line[46:58]
@@ -383,8 +380,6 @@ class WatchdockFrame(wx.Frame):
         # wx.CallAfter(pub.sendMessage, "update", msg="-1")
 
     def onListBox(self, event):  # wxGlade: WatchdockFrame.<event_handler>
-        # print("event ==>",str(event.GetSelection()))
-        # print("event ==>",str(event.GetString()))
         self.container_line = event.GetEventObject().GetStringSelection()
         self.cont_id = self.container_line[0:12] #0:12
         # print("CONTAINER LINE",self.container_line)
@@ -419,11 +414,9 @@ class WatchdockFrame(wx.Frame):
             self.lst_images_hst.SetItems(lines[1:])
         if not self.testing :        
             self.btn_del.Enable()
-        # print("event ==>",str(event))
 
     def onImgHistBox(self, event):  # wxGlade: WatchdockFrame.<event_handler>
         print("Event handler 'onImgHistBox' not implemented!")
-        print("event ==>",str(event))
         event.Skip()
 
     def wrap_vagrant_cmd(self,cmd_str):
@@ -463,7 +456,7 @@ class WatchdockFrame(wx.Frame):
 class WatchdockApp(wx.App):
     def OnInit(self):
         self.frame = WatchdockFrame(None, wx.ID_ANY, "")
-        # self.frame.set_test(True)
+        self.frame.set_test(False) #must be called for initial refresh
         self.SetTopWindow(self.frame)
         self.frame.Show()
         
