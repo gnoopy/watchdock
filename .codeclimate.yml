@@ -1,0 +1,12 @@
+plugins:
+
+  radon: 
+    enabled: true
+    config: 
+      python_version: 2
+
+  sonar-python:
+    enabled: true
+    config:
+      tests_patterns:
+        - tests/**
