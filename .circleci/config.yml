@@ -3,10 +3,10 @@
 # Check https://circleci.com/docs/2.0/language-python/ for more details
 #
 version: 2
+dependencies:
+  pre:
+    - sudo apt-get update; sudo apt-get install -y libgtk2.0-dev libgtk-3-dev; 
 jobs:
-  dependencies:
-    pre:
-      - sudo apt-get update; sudo apt-get install -y libgtk2.0-dev libgtk-3-dev; 
   build_test:
     docker:
       - image: circleci/python:2.7.14
