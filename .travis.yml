@@ -2,16 +2,26 @@ language: python
 python:
   - "2.7"
 
-sudo: enabled
+addons:
+  apt:
+    packages:
+    - libwebkitgtk-dev
+    - libjpeg-dev
+    - libtiff-dev
+    - libgtk2.0-dev
+    - libsdl1.2-dev
+    - libgstreamer-plugins-base0.10-dev
+    - freeglut3
+    - freeglut3-dev
+    - libnotify-dev
 
 install:
-  - pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-16.04 wxPython
-  - wget -q -O /tmp/libpng12.deb http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb \
-  && sudo dpkg -i /tmp/libpng12.deb \
-  && rm /tmp/libpng12.deb
+  - sudo apt-get update
+  - lsb_release -a 
+  - pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-14.04 wxPython
  
 script:
- - python -m unittest tests.testWatchdock
+ - python -m unittest discover -vf tests
 
 branches:
   only:
