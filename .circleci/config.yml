@@ -22,10 +22,14 @@ jobs:
       - checkout
       - run:
           name: checkout result 
-          command: ls -lrt .
+          command: |
+            ls -lrt .
+            pwd
       - run:
           name: Unit Test
-          command: python -m unittest -vf tests.testWatchdock.WatchdockTest
+          command: | 
+            pwd
+            python -m unittest -vf tests.testWatchdock.WatchdockTest
     
 workflows:
   version: 2
