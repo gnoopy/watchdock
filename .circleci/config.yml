@@ -19,7 +19,7 @@ jobs:
 
   test:
     docker:
-      - image: circleci/python:2.7.10
+      - image: circleci/python:2.7.14
     steps:
       - checkout
       - run:
