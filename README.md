@@ -51,7 +51,7 @@ apt-get update
 
 # Install necessary development tools, libs, etc.
 apt-get install -y build-essential dpkg-dev
-apt-get install -y aptitude mc
+apt-get install -y aptitude
 
 apt-get install -y libgtk2.0-dev libgtk-3-dev
 apt-get install -y libjpeg-dev libtiff-dev \
