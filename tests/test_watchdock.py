@@ -7,6 +7,8 @@ import time
 import coverage
 from wx.lib.pubsub import pub
 
+theapp=None
+
 @pytest.fixture
 def app():
     app = run.WatchdockApp(testing=True)
@@ -126,7 +128,7 @@ def test_container_save(app):
     app.frame.cmDlg.txt_your_name.SetValue(name)
     app.frame.cmDlg.OnTextedCommitMsg(None)
     app.frame.cmDlg.txt_commit_msg.SetValue(msg)
-
+    theapp=app
     app.frame.cmDlg.Bind(wx.EVT_SHOW, OnShowCommitDlg, app.frame.cmDlg)
 
     cmd2 = wx.CommandEvent(commandEventType=wx.EVT_BUTTON.evtType[0],id=app.frame.btn_save.GetId())
@@ -143,7 +145,11 @@ def test_container_save(app):
     # print("result:", app.frame.last_cmd_out.strip())
     assert expected.replace('"','') == app.frame.last_cmd_out.strip().replace('"','')
 
-def OnShowCommitDlg(self):
+def OnShowCommitDlg(event):
     print("OnShowCommitDlg called ##############################")
-    pub.sendMessage('container.commit', cmd="")
+    cmDlg=event.GetEventObject()
+    cmd3 = wx.CommandEvent(commandEventType=wx.EVT_BUTTON.evtType[0],id=cmDlg.btn_ok.GetId())
+    cmd3.SetEventObject(cmDlg.btn_ok)
+    cmDlg.btn_ok.ProcessEvent(cmd3)
+    # pub.sendMessage('container.commit', cmd="")
 

@@ -627,12 +627,18 @@ class CommitDialog(wx.Dialog):
             self.is_virgin_commit_msg=False
 
     def OnClickedCommit(self, event):  # wxGlade: CommitDialog.<event_handler>
-        self.EndModal(wx.ID_OK)
+        if self.IsModal():
+            self.EndModal(wx.ID_OK)
+        else:
+            self.Close()
 
         # self.onQuit(None)
 
     def OnClickedCancel(self, event):  # wxGlade: CommitDialog.<event_handler>
-        self.EndModal(wx.ID_CANCEL)
+        if self.IsModal():
+            self.EndModal(wx.ID_CANCEL)
+        else:
+            self.Close()
 
     def OnMsgCommit(self,cmd):
         self.OnClickedCommit(None)
