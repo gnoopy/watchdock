@@ -14,26 +14,28 @@ jobs:
           name: install dependencies
           command: |
             sudo pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-14.04 wxPython
-
-  test:
-    docker:
-      - image: circleci/python:2.7.14
-    steps:
-      - checkout
       - run:
           name: checkout result 
           command: |
             ls -lrt .
             pwd
+            python -c "import wx;print(wx.version())"
       - run:
           name: Unit Test
           command: | 
             pwd
             python -m unittest discover -vf tests
+
+#  test:
+#    docker:
+#      - image: circleci/python:2.7.14
+#    steps:
+#      - checkout
+
     
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
-      - test
+      - build_test
+#      - test
