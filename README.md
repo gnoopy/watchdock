@@ -2,7 +2,7 @@
 >#### Simple `docker management` and `monitoring` tool based on `DOCKER CLI` for developers
 
 [![Build Status](https://travis-ci.org/gnoopy/watchdock.svg?branch=master)](https://travis-ci.org/gnoopy/watchdock)
-
+[![Coverage Status](https://coveralls.io/repos/github/gnoopy/watchdock/badge.svg?branch=master)](https://coveralls.io/github/gnoopy/watchdock?branch=master)
 ----
 
 There are many great, multi-functinoal and beautiful GUI tools for `docker` engineers out there. As a beginner, however, I feel those are too complex for me to use in my development environment. Watchdock will give you quick overview and monitoring method of docker with `light` and `fast` UI operation. Moreover this tool will contribute to your docker study with easy understanding and learning curve at private development space.
