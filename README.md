@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.org/gnoopy/watchdock.svg?branch=master)](https://travis-ci.org/gnoopy/watchdock)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/a4a236451d5f7b0f5968/test_coverage)](https://codeclimate.com/github/gnoopy/watchdock/test_coverage)
-[![release](http://github-release-version.herokuapp.com/github/gnoopy/watchdock/release.svg?style=flat)](https://github.com/gnoopy/watchdock/releases/tag/rel-v0.7)
+[![release](http://github-release-version.herokuapp.com/github/gnoopy/watchdock/release.svg?style=flat)](https://github.com/gnoopy/watchdock/releases/latest)
 
 
 ----
