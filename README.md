@@ -33,16 +33,16 @@ Although I don't want you to expect more features surpassing great docker tools 
 ### Mac & Windows
 ```
 pip install -r requirements.txt
-python watchdock.py
+python watchdock/run.py
 ```
 
 ### Ubuntu
 ```
 pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-16.04 wxPython
-python watchdock.py
+python watchdock/run.py
 ```
 
-Installation script like below would be helpful if the installation above not working properly 
+Installation script like below would be helpful if the installation above does not work properly 
 
 ```
 # Set up and update package repos
