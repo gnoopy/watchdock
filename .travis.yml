@@ -29,12 +29,12 @@ before_script:  # code coverage tool
   - ./cc-test-reporter before-build
 
 script:
- -  xvfb-run python -m unittest -v tests.testWatchdock
+  - xvfb-run python -m unittest -v tests.testWatchdock
 # -  xvfb-run python -m unittest discover -vf tests
 
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT -t coverage.py -r $CC_TEST_REPORTER_ID
 
-  branches:
+branches:
   only:
     - master
