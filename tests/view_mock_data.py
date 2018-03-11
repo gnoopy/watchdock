@@ -1,13 +1,15 @@
 import shelve
 import pickle
+import pprint
 
 a={}
 
 
 f=open('tests/mockdata.pkl','rb')
 a=pickle.load(f)
-print("a keys ====>",a.keys())
-print("a==========>",a)
+# print("a keys ====>",a.keys())
+pp = pprint.PrettyPrinter(indent=4)
+pp.pprint(a)
 
 # d = shelve.open('tests/mockdata.json')
 # f=open('tests/mockdata.pkl','wb')
