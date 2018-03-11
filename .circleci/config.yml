@@ -29,7 +29,7 @@ jobs:
           name: Unit Test
           command: | 
             pwd
-            python -m unittest -vf tests.testWatchdock.WatchdockTest
+            python -m unittest -vf tests
     
 workflows:
   version: 2
