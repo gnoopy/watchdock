@@ -1,13 +1,11 @@
 #!/bin/bash
-#
-
-#
 
 # OSX only
-[ `uname -s` != "Darwin" ] && return
+# [ `uname -s` != "Darwin" ] && return
 CONT_ID=$1
 SHELL=$2
 VGRNT_ID=$3
+
 function iterm () {
 osascript &>/dev/null <<EOF
     tell application "iTerm2"
@@ -43,23 +41,17 @@ tell application "Terminal"
 end tell
 EOF
 }
-
-
-# function appleterm () {
-# osascript  &>/dev/null <<EOF
-# tell application "Terminal"
-#     do script "echo -n -e "\033]0;$title\007";$DOCKER exec -it $CONT_ID bash;exit"
-#     set current settings of selected tab of window 1 to settings set "Basic"
-#     activate
-# end tell
-# EOF
-# }
-if [ -z $VGRNT_ID ]; then
-    echo "------------------"
-    terminal $@
+if [ `uname -s` != "Darwin" ]; then
+    if [ -z $VGRNT_ID ]; then
+        x-terminal-emulator -T "$CONT_ID"  -e "docker exec -it $CONT_ID $SHELL"  
+    else
+        x-terminal-emulator -T "$CONT_ID" -e "vagrant ssh -c \"docker exec -it $CONT_ID $SHELL\" $VGRNT_ID;exit" 
+    fi
 else
-    echo "##################"
-    vterminal $@
+    if [ -z $VGRNT_ID ]; then
+        terminal $@
+    else
+        vterminal $@
+    fi
 fi
-
 

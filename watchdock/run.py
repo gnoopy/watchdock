@@ -391,7 +391,8 @@ class WatchdockFrame(wx.Frame):
                 stdout = tup[0]+tup[1]
             except Exception as e:
                 print(os.getcwd())
-                raise e
+                # raise e
+                return ""
         if command.strip().startswith("vagrant"): #wrapped command
             regex = r'Connection to [0-9\.].* closed\.\s'
             stdout = re.sub(regex,'', stdout,0)
