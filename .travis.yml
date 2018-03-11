@@ -1,18 +1,40 @@
 language: python
 python:
   - "2.7"
-
-sudo: enabled
+env:
+  global:
+    - CC_TEST_REPORTER_ID=cfa8f3ce25234c367e8da72c62c9ec5a784960664362f494bf458f7d1916e3e6
+addons:
+  apt:
+    packages:
+    - libwebkitgtk-dev
+    - libjpeg-dev
+    - libtiff-dev
+    - libgtk2.0-dev
+    - libsdl1.2-dev
+    - libgstreamer-plugins-base0.10-dev
+    - freeglut3
+    - freeglut3-dev
+    - libnotify-dev
 
 install:
-  - pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-16.04 wxPython
-  - wget -q -O /tmp/libpng12.deb http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb \
-  && sudo dpkg -i /tmp/libpng12.deb \
-  && rm /tmp/libpng12.deb
- 
-script:
- - python -m unittest tests.testWatchdock
+  - sudo apt-get update
+  - lsb_release -a 
+  - pip install coverage
+  - pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-14.04 wxPython
 
-branches:
+before_script:  # code coverage tool
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+script:
+ -  xvfb-run python -m unittest -v tests.testWatchdock
+# -  xvfb-run python -m unittest discover -vf tests
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT -t coverage.py -r $CC_TEST_REPORTER_ID
+
+  branches:
   only:
     - master

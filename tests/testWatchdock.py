@@ -3,11 +3,14 @@ import wx
 
 import watchdock.run as run
 import time
+import coverage
 # import testTopLevelWindow
 
 class WatchdockTest(unittest.TestCase):
 
     def setUp(self):
+        self.cov = coverage.Coverage( omit="*/__init__.py",include="watchdock/*")
+        self.cov.start()
         app = wx.App()
         self.frame = run.WatchdockFrame(None, wx.ID_ANY, "")
         self.frame.set_test(True)
@@ -31,9 +34,9 @@ class WatchdockTest(unittest.TestCase):
         # wx.PostEvent(self.frame, cmd)
         sout = self.frame.mockdata['docker container ls -a']
         # time.sleep(1)
-        # print("sout ==>",sout.splitlines()[index+1])
-        # print("list ==>",self.frame.txt_details.GetLineText(0))
-        assert sout.splitlines()[index+1] == self.frame.txt_details.GetLineText(0)
+        print("sout ==>",sout.splitlines()[index+1].decode('utf-8'))
+        print("list ==>",self.frame.txt_details.GetLineText(0))
+        assert sout.splitlines()[index+1].decode('utf-8') == self.frame.txt_details.GetLineText(0)
 
 
     def test_image_selection(self):
@@ -47,15 +50,23 @@ class WatchdockTest(unittest.TestCase):
         self.frame.ProcessEvent(cmd)
         
         img_line = self.frame.lst_images.GetStringSelection()
-        img_id = img_line[46:58]
-
+        # img_id = img_line[46:58]
+        img_id = self.frame.get_img_id(img_line)
         hst_cnt = self.frame.lst_images_hst.GetCount()
         sout = self.frame.mockdata['docker image history '+img_id]
         # time.sleep(1)
+        # print("sout cnt:",len(sout.splitlines()[1:]), " hst_cnt",hst_cnt)
         # print("sout ==>",sout.splitlines())
-        # print("list ==>",frame.lst_images_hst)
-        assert len(sout.splitlines()[1:]) == hst_cnt
+        # print("list ==>",self.frame.lst_images_hst)
+        assert len(sout.splitlines()[1:]) - int(hst_cnt) == 0
 
+    def tearDown(self):
+        self.cov.stop()
+        self.cov.save()
+        self.cov.report()
+        self.cov.xml_report()
 
 if __name__ == '__main__':
+
     unittest.main()
+    

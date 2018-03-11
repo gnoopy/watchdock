@@ -1,3 +1,9 @@
+covhtml/
+.coverage
+*.wxg~
+wxglade_out.*
+cc-test-reporter
+coverage.xml
 regextest.py
 test_unittest.py
 .pytest_cache
