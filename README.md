@@ -2,7 +2,6 @@
 >#### Simple `docker management` and `monitoring` tool based on `DOCKER CLI` for developers
 
 [![Build Status](https://travis-ci.org/gnoopy/watchdock.svg?branch=master)](https://travis-ci.org/gnoopy/watchdock)
-[![Coverage Status](https://coveralls.io/repos/github/gnoopy/watchdock/badge.svg?branch=master)](https://coveralls.io/github/gnoopy/watchdock?branch=master)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/a4a236451d5f7b0f5968/test_coverage)](https://codeclimate.com/github/gnoopy/watchdock/test_coverage)
 ----
 
