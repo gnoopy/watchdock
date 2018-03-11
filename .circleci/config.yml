@@ -4,12 +4,12 @@
 #
 version: 2
 jobs:
+  dependencies:
+    pre:
+      - sudo apt-get update; sudo apt-get install -y libgtk2.0-dev libgtk-3-dev; 
   build_test:
     docker:
       - image: circleci/python:2.7.14
-    dependencies:
-      pre:
-        - sudo apt-get update; sudo apt-get install -y libgtk2.0-dev libgtk-3-dev; 
     steps:
       - checkout
       - run:
