@@ -462,7 +462,7 @@ class WatchdockFrame(wx.Frame):
 class WatchdockApp(wx.App):
     def OnInit(self):
         self.frame = WatchdockFrame(None, wx.ID_ANY, "")
-        # self.frame.set_test(True)
+        self.frame.set_test(False)
         self.SetTopWindow(self.frame)
         self.frame.Show()
         

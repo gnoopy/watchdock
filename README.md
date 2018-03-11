@@ -42,6 +42,26 @@ pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu
 python watchdock.py
 ```
 
+Installation script like below would be helpful if the installation above not working properly 
+
+```
+# Set up and update package repos
+add-apt-repository ppa:deadsnakes/ppa
+apt-get update
+
+# Install necessary development tools, libs, etc.
+apt-get install -y build-essential dpkg-dev
+apt-get install -y aptitude mc
+
+apt-get install -y libgtk2.0-dev libgtk-3-dev
+apt-get install -y libjpeg-dev libtiff-dev \
+	libsdl1.2-dev libgstreamer-plugins-base0.10-dev \
+	libgstreamer-plugins-base1.0-dev \
+	libnotify-dev freeglut3 freeglut3-dev libsm-dev \
+	libwebkitgtk-dev libwebkitgtk-3.0-dev libwebkit2gtk-4.0-dev \
+	libxtst-dev
+```
+
 
 ## Current Features
 - Container/Image/System Information check
