@@ -20,7 +20,9 @@ jobs:
       - image: circleci/python:2.7.14
     steps:
       - checkout
-      - ls -lrt .
+      - run:
+          name: checkout result 
+          command: ls -lrt .
       - run:
           name: Unit Test
           command: python -m unittest -vf tests.testWatchdock
