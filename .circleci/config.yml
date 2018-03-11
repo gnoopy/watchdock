@@ -29,7 +29,7 @@ jobs:
           name: Unit Test
           command: | 
             pwd
-            python -m unittest -vf tests
+            python -m unittest discover -vf tests
     
 workflows:
   version: 2
