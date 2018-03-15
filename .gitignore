@@ -10,3 +10,10 @@ test_unittest.py
 .vscode
 *.pyc
 release.sh
+
+htmlcov/
+logo.pptx
+study/
+tests/cmdtest.py
+watchdock/term.bash
+watchdock/terminal.py

@@ -32,7 +32,16 @@ Although I don't want you to expect more features surpassing great docker tools 
 
 ## Installation & Execution
 
-### Mac & Windows
+### Mac 
+```
+brew install wxmac wxpython
+pip install -r requirements.txt
+python watchdock/run.py
+
+```
+
+
+### Windows
 ```
 pip install -r requirements.txt
 python watchdock/run.py
@@ -76,10 +85,13 @@ apt-get install -y libjpeg-dev libtiff-dev \
 
 
 ## Roadmap
-- Network management
-- Coloring for better readiability
-- Advanced Image management
 - Attaching shell
+- Container delete
+- Attaching management tools (eg. sql query tool, web browser etc.)
+- Volume manaement
+- Network management
+- Advanced Image management
 - Deployment management
 - Universal installer for Mac, Windows and Ubuntu
+- Coloring for better readiability
 

@@ -22,6 +22,8 @@ install:
   - lsb_release -a 
   - pip install coverage
   - pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-14.04 wxPython
+  - sudo pip install --upgrade --pre -f https://wxpython.org/Phoenix/snapshot-builds/ wxPython 
+
 
 before_script:  # code coverage tool
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
