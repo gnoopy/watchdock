@@ -1,12 +1,13 @@
 import shelve
 import pickle
+import cPickle
 import pprint
 
 a={}
 
 
 f=open('tests/mockdata.pkl','rb')
-a=pickle.load(f)
+a=cPickle.load(f)
 print("a keys ====>",a.keys())
 # pp = pprint.PrettyPrinter(indent=4)
 # pp.pprint(a)

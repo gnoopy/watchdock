@@ -11,7 +11,7 @@ print "\n".join(sys.path)
 import wx
 import wx.lib.busy as busy
 
-import terminal
+# import terminal
 # begin wxGlade: dependencies
 # end wxGlade
 
@@ -27,7 +27,7 @@ from threading import Thread
 import wx.lib.agw.pyprogress as PP
 import re
 import platform
-import pickle
+import cPickle
 import coverage
 
 
@@ -91,7 +91,7 @@ class WatchdockFrame(wx.Frame):
     #     self.testing = testing
     #     if self.testing:
     #         f = open('./tests/mockdata.pkl','rb')
-    #         self.mockdata=pickle.load(f)
+    #         self.mockdata=cPickle.load(f)
     #         self.panel_1.SetBackgroundColour(wx.YELLOW)
     #     self.refresh()
 
@@ -105,8 +105,8 @@ class WatchdockFrame(wx.Frame):
             self.font_name = "Monaco"
         elif "Ubuntu" in platform.platform():
             self.font_name = "Monospace"
-        elif "Widows" in platform.platform():
-            self.font_name = "Tahoma"
+        elif "Windows" in platform.platform():
+            self.font_name = "Menlo"
         self.vmids=[]
         self.cmd_cont_info=""
         self.cmd_imgs_info =""
@@ -164,7 +164,7 @@ class WatchdockFrame(wx.Frame):
         # end wxGlade
         if self.testing:
             f = open('./tests/mockdata.pkl','rb')
-            self.mockdata=pickle.load(f)
+            self.mockdata=cPickle.load(f)
             self.panel_1.SetBackgroundColour(wx.YELLOW)
             self.refresh()
         else:
@@ -357,18 +357,18 @@ class WatchdockFrame(wx.Frame):
         ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
         logs = ansi_escape.sub('', logs)
         self.txt_details.SetValue(self.container_line+"\n"+top+logs)
-        if not self.testing :
-            self.btn_push.Disable()
-            if "Up" in self.container_line and "Exited (" not in self.container_line:
-                self.btn_stop.Enable()
-                self.btn_restart.Enable()
-                self.btn_start.Disable()
-                self.btn_save.Enable()
-            else:
-                self.btn_stop.Disable()
-                self.btn_restart.Disable()
-                self.btn_start.Enable()
-                self.btn_save.Disable()
+        # if not self.testing :
+        self.btn_push.Disable()
+        if "Up" in self.container_line and "Exited (" not in self.container_line:
+            self.btn_stop.Enable()
+            self.btn_restart.Enable()
+            self.btn_start.Disable()
+            self.btn_save.Enable()
+        else:
+            self.btn_stop.Disable()
+            self.btn_restart.Disable()
+            self.btn_start.Enable()
+            self.btn_save.Disable()
 
     def get_cont_id(self):
         return self.container_line[0:12] #0:12
@@ -395,7 +395,10 @@ class WatchdockFrame(wx.Frame):
             #     docker_cmd= self.run_cmd_sync('vagrant ssh -c "which docker"').strip()
             # else: 
                 # docker_cmd= self.run_cmd_sync('vagrant ssh -c "which docker"').strip()
-            wx.CallAfter(self.run_cmd_sync, "watchdock/term.bash "+self.cont_nm+" "+sh_type+" "+vgrnt_id)
+            termscript="watchdock/term.bash "
+            if "Windows" in platform.platform():
+                termscript="watchdock/term.cmd "
+            wx.CallAfter(self.run_cmd_sync, termscript+self.cont_nm+" "+sh_type+" "+vgrnt_id)
 
     def onImgListBox(self, event):  # wxGlade: WatchdockFrame.<event_handler>
         img_line = event.GetEventObject().GetStringSelection()
@@ -428,14 +431,22 @@ class WatchdockFrame(wx.Frame):
             command = self.wrap_vagrant_cmd(command)
             # command.replace("-c","")
         stdout = ""
+        print("command **********",command)
         if self.testing and command in self.mockdata.keys():
             stdout = self.mockdata[command]
+        elif self.testing and command+"\r" in self.mockdata.keys():
+            stdout = self.mockdata[command+"\r"]
         else:
             if self.testing:
-                command="tests/dummyshell "+command
-                # print("command **********",command)
+                if "Windows" in platform.platform():
+                    command="tests\\\\dummy.cmd " +command
+                else:
+                    command="tests/dummyshell "+command
+            print("command2 **********",command)
+  
             try:
                 s=shlex.split(command.encode('ascii','ignore'))
+                print('s',s)
                 process = subprocess.Popen(s, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 tup = process.communicate()
                 stdout = tup[0]+tup[1]
@@ -449,10 +460,10 @@ class WatchdockFrame(wx.Frame):
 
         # temporal use for test data record
         # f = open('./tests/mockdata.pkl','rb')
-        # testdata = pickle.load(f)
+        # testdata = cPickle.load(f)
         # testdata[command]=ret
         # f = open('./tests/mockdata.pkl','wb')
-        # pickle.dump(testdata,f)
+        # cPickle.dump(testdata,f)
         # f.close()
 
         self.last_cmd_out=ret
@@ -583,8 +594,8 @@ class CommitDialog(wx.Dialog):
         # begin wxGlade: CommitDialog.__init__
         wx.Dialog.__init__(self, None, wx.ID_ANY,title="Save container change",style=wx.DEFAULT_DIALOG_STYLE,size=(470, 290))
         # self.txt_img_name_tag = wx.TextCtrl(self, wx.ID_ANY, "namespace/name:tag", style=wx.HSCROLL | wx.TE_DONTWRAP)
-        self.txt_img_name_tag = wx.TextCtrl(self, wx.ID_ANY, repo, style=wx.HSCROLL | wx.TE_DONTWRAP)
-        self.txt_your_name = wx.TextCtrl(self, wx.ID_ANY, "", style=wx.HSCROLL | wx.TE_DONTWRAP)
+        self.txt_img_name_tag = wx.TextCtrl(self, wx.ID_ANY, repo)
+        self.txt_your_name = wx.TextCtrl(self, wx.ID_ANY, "")
         self.txt_commit_msg = wx.TextCtrl(self, wx.ID_ANY, "quick save", style=wx.TE_BESTWRAP | wx.TE_MULTILINE | wx.TE_WORDWRAP )
         self.btn_ok = wx.Button(self, wx.ID_ANY, "Commit")
         self.btn_cancel = wx.Button(self, wx.ID_ANY, "Cancel")
@@ -706,8 +717,8 @@ class WatchdockApp(wx.App):
         self.frame = WatchdockFrame(parent=None, testing=self.testing, id=wx.ID_ANY)
         # self.frame.set_test(testing) #must be called for initial refresh
         self.SetTopWindow(self.frame)
-        if not self.testing:
-            self.frame.Show()
+        # if not self.testing:
+        self.frame.Show()
 
 
     def OnInit(self):
@@ -728,6 +739,6 @@ class WatchdockApp(wx.App):
 # end of class WatchdockApp
 
 if __name__ == "__main__":
-    app = WatchdockApp(testing=False)
+    app = WatchdockApp(testing=True)
     app.MainLoop()
     

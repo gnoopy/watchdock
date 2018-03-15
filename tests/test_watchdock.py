@@ -52,7 +52,13 @@ def test_image_selection(app):
     # img_id = img_line[46:58]
     img_id = app.frame.get_img_id(img_line)
     hst_cnt = app.frame.lst_images_hst.GetCount()
-    sout = app.frame.mockdata['docker image history '+img_id]
+    sout=''
+    if 'docker image history '+img_id in app.frame.mockdata.keys():
+        sout = app.frame.mockdata['docker image history '+img_id]
+    elif 'docker image history '+img_id+"\r" in app.frame.mockdata.keys():
+        sout = app.frame.mockdata['docker image history '+img_id+"\r"]
+    else:
+        assert False
     # time.sleep(1)
     # print("sout cnt:",len(sout.splitlines()[1:]), " hst_cnt",hst_cnt)
     # print("sout ==>",sout.splitlines())
@@ -135,7 +141,7 @@ def test_container_save(app):
     expected = 'docker container commit -a "%s" -m "%s" %s %s'%(name, msg, app.frame.cmDlg.cont_id, imgtag)
     # print("expected:",expected)
     # print("result:", app.frame.last_cmd_out.strip())
-    assert expected.replace('"','') == app.frame.last_cmd_out.strip() 
+    assert expected.replace('"','') == app.frame.last_cmd_out.strip().replace('"','')
 
 def OnShowCommitDlg(self, event):
     pub.sendMessage('container.commit', cmd="")
