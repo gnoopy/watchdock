@@ -143,6 +143,7 @@ def test_container_save(app):
     # print("result:", app.frame.last_cmd_out.strip())
     assert expected.replace('"','') == app.frame.last_cmd_out.strip().replace('"','')
 
-def OnShowCommitDlg(self, event):
+def OnShowCommitDlg(self):
+    print("OnShowCommitDlg called ##############################")
     pub.sendMessage('container.commit', cmd="")
 

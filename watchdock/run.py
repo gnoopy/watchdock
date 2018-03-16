@@ -11,7 +11,7 @@ print "\n".join(sys.path)
 import wx
 import wx.lib.busy as busy
 
-# import terminal
+    import terminal
 # begin wxGlade: dependencies
 # end wxGlade
 
@@ -33,67 +33,7 @@ import coverage
 
 
 
-# class ProgressThread(Thread):
-#     """Test Worker Thread Class."""
-    
-#     def __init__(self):
-#         """Init Worker Thread Class."""
-#         Thread.__init__(self)
-#         self.start()  # start the thread
-
-#     def run(self):
-#         """Run Worker Thread."""
-#         wx.MilliSleep(100)
-#         pub.sendMessage("update", msg="")
-
-
-# class MyProgressDialog(wx.lib.agw.pyprogress.PyProgress):
-#     """"""
-    
-#     def __init__(self, act_msg):
-#         """Constructor"""
-#         wx.lib.agw.pyprogress.PyProgress.__init__(self, None, -1, "Command Execution",
-#         act_msg,
-#         agwStyle=wx.PD_APP_MODAL)
-#         self.SetGaugeSteps(50)
-#         self.SetGaugeBackground(wx.WHITE)
-#         self.SetGaugeProportion(0.2)
-#         self.SetFirstGradientColour(wx.TheColourDatabase.FindColour("white"))
-#         self.SetSecondGradientColour(wx.TheColourDatabase.FindColour("grey"))
-#         self.SetSize(300, self.GetSize()[1])
-#         self.stopNow = False
-#         # create a pubsub listener
-#         pub.subscribe(self.updateProgress, "update")
-    
-#     def updateProgress(self, msg):
-#         """
-#         Update the progress bar
-#         """
-#         if msg == "-1":
-#             self.stopNow = True
-#             wx.MilliSleep(50)
-#             self.Hide()
-#             self.Destroy()
-#             wx.SafeYield()
-#             wx.GetApp().GetTopWindow().Raise()
-#         else:
-#             keepGoing = True
-#             while keepGoing:
-#                 wx.MilliSleep(30)
-#                 if self.stopNow:
-#                     break
-#                 keepGoing = self.UpdatePulse()
-
-
 class WatchdockFrame(wx.Frame):
-
-    # def set_test(self, testing=False):
-    #     self.testing = testing
-    #     if self.testing:
-    #         f = open('./tests/mockdata.pkl','rb')
-    #         self.mockdata=cPickle.load(f)
-    #         self.panel_1.SetBackgroundColour(wx.YELLOW)
-    #     self.refresh()
 
     def __init__(self, parent, testing, id, **args):
         self.testing = testing
@@ -334,10 +274,10 @@ class WatchdockFrame(wx.Frame):
 
     def OnClickedPush(self, event):  # wxGlade: WatchdockFrame.<event_handler>
         cmd = 'docker push %s'%(self.img_tag)
-        print cmd
+        # print cmd
         terminal_dlg = terminal.LogTailer(cmd)
         terminal_dlg.ShowModal()
-        terminal_dlg.Destroy()
+        # terminal_dlg.Destroy()
 
     def OnclickedDelete(self, event):  # wxGlade: WatchdockFrame.<event_handler>
         with busy.BusyInfo("Deleting image... ",bgColour=wx.Colour(118,113,113)):
@@ -607,7 +547,7 @@ class CommitDialog(wx.Dialog):
         self.Bind(wx.EVT_BUTTON, self.OnClickedCommit, self.btn_ok)
         self.Bind(wx.EVT_BUTTON, self.OnClickedCancel, self.btn_cancel)
         # end wxGlade
-        pub.subscribe(self.OnMsgCommit,   'container.commit')
+        pub.subscribe(self.OnMsgCommit, 'container.commit')
 
 
     def SetRepository(self, cont_id,repo):
@@ -624,8 +564,6 @@ class CommitDialog(wx.Dialog):
     def __set_properties(self):
         # begin wxGlade: CommitDialog.__set_properties
         self.is_virgin_commit_msg=True
-        # self.SetTitle("Save container change")
-        # self.SetSize((470, 290))
         self.txt_img_name_tag.SetToolTipString("You can enter new string other than existed image name and tag")
         self.txt_commit_msg.SetMinSize((-1, 60))
         # end wxGlade
@@ -696,13 +634,11 @@ class CommitDialog(wx.Dialog):
 
     def OnClickedCancel(self, event):  # wxGlade: CommitDialog.<event_handler>
         self.EndModal(wx.ID_CANCEL)
-        # # self.onQuit(None)
-        # self.Hide()
-        # self.Close()
-        # event.Skip()
-# end of class CommitDialog
+
     def OnMsgCommit(self,cmd):
         self.OnClickedCommit(None)
+# end of class CommitDialog
+
 
 class WatchdockApp(wx.App):
 
@@ -711,9 +647,9 @@ class WatchdockApp(wx.App):
         self.testing=testing
         self.cov = None
         # self.cov = coverage.Coverage(omit="*/__init__.py",include="watchdock/*")
-        if self.testing:
-            self.cov = coverage.Coverage(include="watchdock/*")
-            self.cov.start()
+        # if self.testing:
+        #     self.cov = coverage.Coverage(include="watchdock/*")
+        #     self.cov.start()
         self.frame = WatchdockFrame(parent=None, testing=self.testing, id=wx.ID_ANY)
         # self.frame.set_test(testing) #must be called for initial refresh
         self.SetTopWindow(self.frame)
@@ -728,17 +664,16 @@ class WatchdockApp(wx.App):
         self.Destroy()
     
     def Destroy(self):
-        # print("################### DESTROYED #############################")
-        if self.testing:
-            self.cov.stop()
-            self.cov.save()
-            self.cov.report()
-            self.cov.xml_report()
-            self.cov.html_report()
+        # if self.testing:
+        #     self.cov.stop()
+        #     self.cov.save()
+        #     self.cov.report()
+        #     self.cov.xml_report()
+        #     self.cov.html_report()
         wx.PyApp.Destroy(self)
 # end of class WatchdockApp
 
 if __name__ == "__main__":
-    app = WatchdockApp(testing=True)
+    app = WatchdockApp(testing=False)
     app.MainLoop()
     

@@ -15,5 +15,3 @@ htmlcov/
 logo.pptx
 study/
 tests/cmdtest.py
-watchdock/term.bash
-watchdock/terminal.py
