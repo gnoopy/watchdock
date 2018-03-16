@@ -10,8 +10,7 @@ print "\n".join(sys.path)
 
 import wx
 import wx.lib.busy as busy
-
-    import terminal
+import terminal
 # begin wxGlade: dependencies
 # end wxGlade
 
