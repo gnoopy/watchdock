@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.org/gnoopy/watchdock.svg?branch=master)](https://travis-ci.org/gnoopy/watchdock)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/a4a236451d5f7b0f5968/test_coverage)](https://codeclimate.com/github/gnoopy/watchdock/test_coverage)
-[![GitHub release](https://img.shields.io/badge/release-v0.7.5-green.svg)](https://github.com/gnoopy/watchdock/releases/tag/v0.7.6)
+[![GitHub release](https://img.shields.io/badge/release-v0.7.6-green.svg)](https://github.com/gnoopy/watchdock/releases/tag/v0.7.6)
 
 ----
 
