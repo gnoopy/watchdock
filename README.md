@@ -22,7 +22,7 @@ Although I don't want you to expect more features surpassing great docker tools 
 
 ## History
 
-- v0.7.6   - 03/17/2018 - SSH for double clicked container, Automated pytest and coverage test, refinement
+- v0.7.6   - 03/17/2018 - SSH for double clicked container, Automated pytest and coverage test
 - rel-v0.7 - 03/12/2018 - Docker image delete 
 - rel-v0.6 - 03/10/2018 - Vagrant docker information consolidation feature
 - Version 0.5   - 03/09/2018
