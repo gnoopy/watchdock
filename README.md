@@ -3,8 +3,7 @@
 
 [![Build Status](https://travis-ci.org/gnoopy/watchdock.svg?branch=master)](https://travis-ci.org/gnoopy/watchdock)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/a4a236451d5f7b0f5968/test_coverage)](https://codeclimate.com/github/gnoopy/watchdock/test_coverage)
-[![release](http://github-release-version.herokuapp.com/github/gnoopy/watchdock/release.svg?style=flat)](https://github.com/gnoopy/watchdock/releases/latest)
-
+[![GitHub release](https://img.shields.io/badge/release-v0.7.5-green.svg)](https://github.com/gnoopy/watchdock/releases/tag/v0.7.6)
 
 ----
 
@@ -22,8 +21,11 @@ Although I don't want you to expect more features surpassing great docker tools 
 
 
 ## History
-- Version 0.6 - 03/10/2018 - Vagrant docker information consolidation feature
-- Version 0.5 - 03/09/2018
+
+- v0.7.6   - 03/17/2018 - SSH for double clicked container, Automated pytest and coverage test, refinement
+- rel-v0.7 - 03/12/2018 - Docker image delete 
+- rel-v0.6 - 03/10/2018 - Vagrant docker information consolidation feature
+- Version 0.5   - 03/09/2018
 ![Screenshot](screenshot.png)
 
 
@@ -78,6 +80,7 @@ apt-get install -y libjpeg-dev libtiff-dev \
 
 
 ## Current Features
+- SSH to double clicked container for Windows, Mac and Ubuntu
 - Container/Image/System Information check
 - Container survival (start,stop,restart )
 - Process information of each container
@@ -88,7 +91,6 @@ apt-get install -y libjpeg-dev libtiff-dev \
 
 
 ## Roadmap
-- Attaching shell
 - Container delete
 - Attaching management tools (eg. sql query tool, web browser etc.)
 - Volume manaement
